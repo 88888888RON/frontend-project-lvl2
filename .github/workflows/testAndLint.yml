@@ -2,10 +2,12 @@ name: testAndLint
 on: push
 jobs:
     test:
-        runs-on: ubuntu latest
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-            - run: make install
-            - run: make eslint
-            - run: make test
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+  
+        - name: Deps install
+          run: make install
+  
+        - name: Linter check
+          run: make lint
