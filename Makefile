@@ -6,3 +6,12 @@ gendiff:
 
 publish:
 	npm publish --dry-run
+
+eslint:
+	npx eslint .
+
+eslint fix:
+	npx eslint --fix .
+
+test:
+	npx node-options=--no-warnings --experimental-vm-modules jest
