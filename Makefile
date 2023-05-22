@@ -7,10 +7,10 @@ gendiff:
 publish:
 	npm publish --dry-run
 
-eslint:
+lint:
 	npx eslint .
 
-eslint fix:
+lint fix:
 	npx eslint --fix .
 
 test:
