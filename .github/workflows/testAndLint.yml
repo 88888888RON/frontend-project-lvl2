@@ -11,3 +11,6 @@ jobs:
   
         - name: Linter check
           run: make lint
+
+        - name: Jest check
+          run: make test        
