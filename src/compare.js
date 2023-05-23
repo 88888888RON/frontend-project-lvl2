@@ -12,22 +12,24 @@ const compareFlatJson = (fileName1, fileName2) => {
   const keys2 = Object.keys(obj2);
   const unionKeys = _.union(keys1, keys2);
   const sortedUnionKeys = _.sortBy(unionKeys);
-  const obj = {};
 
-  for (const key of sortedUnionKeys) {
+  const object = sortedUnionKeys.reduce((obj, key) => {
     if (!Object.hasOwn(obj2, key)) {
-      obj[`- ${key}`] = obj1[key];
-    } else if (!Object.hasOwn(obj1, key)) {
-      obj[`+ ${key}`] = obj2[key];
-    } else if (obj1[key] === obj2[key]) {
-      obj[`  ${key}`] = obj1[key];
-    } else if (obj1[key] !== obj2[key]) {
-      obj[`- ${key}`] = obj1[key];
-      obj[`+ ${key}`] = obj2[key];
+      return { ...obj, [`- ${key}`]: obj1[key] };
     }
-  }
+    if (!Object.hasOwn(obj1, key)) {
+      return { ...obj, [`+ ${key}`]: obj2[key] };
+    }
+    if (obj1[key] === obj2[key]) {
+      return { ...obj, [`  ${key}`]: obj1[key] };
+    }
+    if (obj1[key] !== obj2[key]) {
+      return { ...obj, [`- ${key}`]: obj1[key], [`+ ${key}`]: obj2[key] };
+    }
+    return obj;
+  }, {});
 
-  return obj;
+  return object;
 };
 
 const objToString = (obj) => {
