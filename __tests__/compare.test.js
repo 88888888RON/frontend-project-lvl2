@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (fileName) => fs.readFileSync(getFixturePath(fileName), 'utf-8');
-const expectedFileJson = readFile('expectedFile.txt');
+const expectedFlatFile = readFile('expectedFile.txt');
 
 test('getExtension', () => {
   expect(getExtension('file.json')).toEqual('json');
@@ -17,9 +17,16 @@ test('getExtension', () => {
   expect(getExtension('file.yaml')).toEqual('yaml');
 });
 
-test('expectedFileJson', () => {
+test('compareFlatJson', () => {
   const fileName1 = `${process.cwd()}/__fixtures__/file1.json`;
   const fileName2 = `${process.cwd()}/__fixtures__/file2.json`;
 
-  expect(compare(fileName1, fileName2)).toEqual(expectedFileJson);
+  expect(compare(fileName1, fileName2)).toEqual(expectedFlatFile);
+});
+
+test('compareFlatYml', () => {
+  const file3 = `${process.cwd()}/__fixtures__/file3.yml`;
+  const file4 = `${process.cwd()}/__fixtures__/file4.yaml`;
+
+  expect(compare(file3, file4)).toEqual(expectedFlatFile);
 });
