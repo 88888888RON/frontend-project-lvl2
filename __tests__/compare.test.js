@@ -35,3 +35,24 @@ test('compareFlatYmlAndJson', () => {
 
   expect(compare(file1, file4)).toEqual(expectedFlatFile);
 });
+
+test('compareNestedJson', () => {
+  const fileName1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
+  const fileName2 = `${process.cwd()}/__fixtures__/recursiveFiles/file2.json`;
+
+  expect(compare(fileName1, fileName2)).toEqual(expectedFlatFile);
+});
+
+test('compareNestedYml', () => {
+  const file3 = `${process.cwd()}/__fixtures__/recursiveFiles/file3.yml`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file3, file4)).toEqual(expectedFlatFile);
+});
+
+test('compareNestedYmlAndJson', () => {
+  const file1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file1, file4)).toEqual(expectedFlatFile);
+});
