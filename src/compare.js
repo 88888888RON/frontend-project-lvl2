@@ -1,13 +1,24 @@
 import _ from 'lodash';
 import path from 'node:path';
 import * as fs from 'node:fs';
+import parse from './parsers.js';
 
 const getFixturePath = (file) => path.resolve(file);
 const readFile = (file) => fs.readFileSync(getFixturePath(file), 'utf-8');
+const getExtension = (file) => {
+  const ext = path.extname(file);
+  return ext;
+};
 
 const compareFlatJson = (fileName1, fileName2) => {
-  const obj1 = JSON.parse(readFile(fileName1));
-  const obj2 = JSON.parse(readFile(fileName2));
+  const readFile1 = readFile(fileName1);
+  const readFile2 = readFile(fileName2);
+  const ext1 = getExtension(fileName1);
+  const ext2 = getExtension(fileName2);
+  const obj1 = parse(readFile1, ext1);
+  console.log(obj1);
+  const obj2 = parse(readFile2, ext2);
+  console.log(obj2);
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
   const unionKeys = _.union(keys1, keys2);
@@ -50,22 +61,8 @@ const objToString = (obj) => {
   return res; // В начало и в конец ставлю { и }, после 1ой делаю перенос строки.
 }; //  Вывод напоминает объект, но им не является.
 
-const getExtension = (file) => {
-  const result = file
-    .split('.')
-    .pop();
-  // console.log(result);
-  return result;
-};
-
-const compare = (file1, file2) => {
-  if ((getExtension(file1) === getExtension(file2)) && (getExtension(file1) === 'json')) {
-    // console.log(`равенство выполнилось`);
-    return objToString(compareFlatJson(file1, file2));
-  }
-  return 'error';
-};
+const compare = (file1, file2) => objToString(compareFlatJson(file1, file2));
 
 export {
-  compare, compareFlatJson, getExtension, objToString,
+  compare, compareFlatJson, objToString, getExtension,
 };
