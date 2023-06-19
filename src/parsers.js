@@ -9,9 +9,6 @@ const parse = (file, ext) => {
     // console.log(yaml.load(file));
     return yaml.load(file);
   }
-  if (file === '.txt') {
-    return file;
-  }
   return 'unknown format';
 };
 
