@@ -1,7 +1,8 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import * as fs from 'node:fs';
-import { compare, getExtension } from '../src/compare.js';
+import compare from '../src/compare.js';
+import { getExtension } from '../src/diffTree.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,7 +11,9 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (fileName) => fs.readFileSync(getFixturePath(fileName), 'utf-8');
 const readRecursiveFile = (fileName) => fs.readFileSync(getFixturePathRecursive(fileName), 'utf-8');
 const expectedFlatFile = readFile('expectedFile.txt');
-const expectedRecursiveFile = readRecursiveFile('expectedRecursive.txt');
+const expectedRecursiveFileStylish = readRecursiveFile('testStylish.txt');
+const expectedRecursiveFileFlat = readRecursiveFile('testPlain.txt');
+const expectedRecursiveFileJson = readRecursiveFile('testJson.txt');
 
 test('getExtension', () => {
   expect(getExtension('file.json')).toEqual('.json');
@@ -18,44 +21,93 @@ test('getExtension', () => {
   expect(getExtension('file.yaml')).toEqual('.yaml');
 });
 
-test('compareRecursiveJson', () => {
+test('stylishRecJsonJson', () => {
   const fileName1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
   const fileName2 = `${process.cwd()}/__fixtures__/recursiveFiles/file2.json`;
 
-  expect(compare(fileName1, fileName2)).toEqual(expectedRecursiveFile);
+  expect(compare(fileName1, fileName2, 'stylish')).toEqual(expectedRecursiveFileStylish);
 });
 
-test('compareRecursiveYml', () => {
+test('stylishRecYmlYml', () => {
   const file3 = `${process.cwd()}/__fixtures__/recursiveFiles/file3.yml`;
   const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
 
-  expect(compare(file3, file4)).toEqual(expectedRecursiveFile);
+  expect(compare(file3, file4, 'stylish')).toEqual(expectedRecursiveFileStylish);
 });
 
-test('compareRecursiveYmlAndJson', () => {
+test('stylishRecYmlJson', () => {
   const file1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
   const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
 
-  expect(compare(file1, file4)).toEqual(expectedRecursiveFile);
+  expect(compare(file1, file4, 'stylish')).toEqual(expectedRecursiveFileStylish);
 });
 
-test('compareFlatJson', () => {
+test('StylishFlatJson', () => {
   const fileName1 = `${process.cwd()}/__fixtures__/file1.json`;
   const fileName2 = `${process.cwd()}/__fixtures__/file2.json`;
 
-  expect(compare(fileName1, fileName2)).toEqual(expectedFlatFile);
+  expect(compare(fileName1, fileName2, 'stylish')).toEqual(expectedFlatFile);
 });
 
-test('compareFlatYml', () => {
+test('StylishFlatYml', () => {
   const file3 = `${process.cwd()}/__fixtures__/file3.yml`;
   const file4 = `${process.cwd()}/__fixtures__/file4.yaml`;
 
-  expect(compare(file3, file4)).toEqual(expectedFlatFile);
+  expect(compare(file3, file4, 'stylish')).toEqual(expectedFlatFile);
 });
 
-test('compareFlatYmlAndJson', () => {
+test('StylishFlatYmlJson', () => {
   const file1 = `${process.cwd()}/__fixtures__/file1.json`;
   const file4 = `${process.cwd()}/__fixtures__/file4.yaml`;
 
-  expect(compare(file1, file4)).toEqual(expectedFlatFile);
+  expect(compare(file1, file4, 'stylish')).toEqual(expectedFlatFile);
+});
+
+test('PlainRecJsonJson', () => {
+  const fileName1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
+  const fileName2 = `${process.cwd()}/__fixtures__/recursiveFiles/file2.json`;
+
+  expect(compare(fileName1, fileName2, 'plain')).toEqual(expectedRecursiveFileFlat);
+});
+
+test('PlainRecYmlYml', () => {
+  const file3 = `${process.cwd()}/__fixtures__/recursiveFiles/file3.yml`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file3, file4, 'plain')).toEqual(expectedRecursiveFileFlat);
+});
+
+test('PlainRecYmlJson', () => {
+  const file1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file1, file4, 'plain')).toEqual(expectedRecursiveFileFlat);
+});
+
+test('JsonRecJsonJson', () => {
+  const fileName1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
+  const fileName2 = `${process.cwd()}/__fixtures__/recursiveFiles/file2.json`;
+
+  expect(compare(fileName1, fileName2, 'json')).toEqual(expectedRecursiveFileJson);
+});
+
+test('JsonRecYmlYml', () => {
+  const file3 = `${process.cwd()}/__fixtures__/recursiveFiles/file3.yml`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file3, file4, 'json')).toEqual(expectedRecursiveFileJson);
+});
+
+test('JsonRecYmlJson', () => {
+  const file1 = `${process.cwd()}/__fixtures__/recursiveFiles/file1.json`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file1, file4, 'json')).toEqual(expectedRecursiveFileJson);
+});
+
+test('sorry', () => {
+  const file3 = `${process.cwd()}/__fixtures__/recursiveFiles/testJson.txt`;
+  const file4 = `${process.cwd()}/__fixtures__/recursiveFiles/file4.yaml`;
+
+  expect(compare(file3, file4, 'unknown format')).toEqual('sorry, but I can use only stylish, plain and json format');
 });
