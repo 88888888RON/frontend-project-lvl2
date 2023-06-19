@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { compare } from '../src/compare.js';
+import compare from '../src/compare.js';
 
 const program = new Command();
 
@@ -14,6 +14,6 @@ program
   .option('-f, --format <type>', 'output format', 'stylish')
   .action((file1, file2) => {
     const options = program.opts();
-    console.log(compare(file1, file2, options));
+    console.log(compare(file1, file2, options.format));
   })
   .parse(process.argv);
