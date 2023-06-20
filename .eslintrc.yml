@@ -15,3 +15,5 @@ rules:
   no-console: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }] # разрешает подчёркивание в именах только для двух констант
   import/extensions: 0
+  no-prototype-builtins: 0
+  no-shadow: 0
