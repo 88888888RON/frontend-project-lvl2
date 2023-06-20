@@ -1,9 +1,13 @@
-name: testAndLint
+# Name of workflow
+name: Node CI
 
 # Trigger the workflow on push or pull request
 on:
   - push
   - pull_request
+
+env:
+   CI: true
 
 jobs:
     build:
