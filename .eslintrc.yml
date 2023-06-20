@@ -15,4 +15,3 @@ rules:
   no-console: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }] # разрешает подчёркивание в именах только для двух констант
   import/extensions: 0
-  no-param-reassign: 0 # разрешает переназначенеи параметров ( el0, el1 в функции objToString в файле compare.js)
