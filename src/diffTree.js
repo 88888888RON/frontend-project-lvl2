@@ -20,7 +20,6 @@ const getDiff = (fileName1, fileName2) => {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
     const sortedUnionKeys = _.sortBy(_.union(keys1, keys2));
-
     const res = sortedUnionKeys.reduce((acc, key) => {
       // eslint-disable-next-line no-prototype-builtins
       if (!obj1.hasOwnProperty(key)) {
@@ -38,10 +37,8 @@ const getDiff = (fileName1, fileName2) => {
       }
       return { ...acc, [key]: { type: 'changed', value1: obj1[key], value2: obj2[key] } };
     }, {});
-
     return res;
   };
-
   return iter(obj1, obj2);
 };
 

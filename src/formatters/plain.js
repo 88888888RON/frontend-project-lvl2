@@ -16,25 +16,22 @@ const plain = (obj) => {
       .entries(current)
       .map(([key, value]) => {
         const newName = path.join(fullName, key).split('/').join('.');
-        if (value.type === 'object') {
-          return iter(value.children, newName);
+        switch (value.type) {
+          case 'object':
+            return iter(value.children, newName);
+          case 'removed':
+            return `Property '${newName}' was removed`;
+          case 'added':
+            return `Property '${newName}' was added with value: ${str(value.value2)}`;
+          case 'changed':
+            return `Property '${newName}' was updated. From ${str(value.value1)} to ${str(value.value2)}`;
+          default:
+            return '';
         }
-        if (value.type === 'removed') {
-          return `Property '${newName}' was removed`;
-        }
-        if (value.type === 'added') {
-          return `Property '${newName}' was added with value: ${str(value.value2)}`;
-        }
-        if (value.type === 'changed') {
-          return `Property '${newName}' was updated. From ${str(value.value1)} to ${str(value.value2)}`;
-        }
-        return '';
       })
       .filter((el) => el !== '');
-
     return [...lines].join('\n');
   };
-
   return iter(obj, '');
 };
 
