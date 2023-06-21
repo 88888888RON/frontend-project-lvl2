@@ -32,7 +32,7 @@ gendiff -h
 2. Install dependencies
 
 ```bash
- npm ci,
+ npm ci
  ```
  or
  ```bash
